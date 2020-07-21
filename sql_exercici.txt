@@ -1,4 +1,4 @@
-# sql_exercici
+# sql_exercici #CORRECTION
 #1
 select count(*) as total from flights;
 
@@ -10,12 +10,15 @@ select origin, colyear, colmonth, avg(arrdelay) as prom_arribades from flights g
 
 #4
 select a.city, colyear, colmonth, avg(arrdelay) as prom_arribades from flights f, usairports a where a.iata = f.origin  group by colyear, colmonth order by a.city, colyear, colmonth;
+OR
+select a.city, f.colyear, f.colmonth, avg(f.arrdelay) from flights as f left join usairports as a on f.origin = a.iata group by city, colyear, colmonth; 
 
 #5
-select uniquecarrier, colyear, colmonth, sum(cancelled) as total_cancelled from flights group by colyear, colmonth order by total_cancelled desc;
+select uniquecarrier, colyear, colmonth, sum(cancelled) as total_cancelled from flights group by colyear, colmonth having total_cancelled > 0 order by total_cancelled desc;
 
 #6
-select tailnum, sum(distance) as totaldistance from flights where tailnum is not null and tailnum != '' group by tailnum order by totaldistance desc;    #where clause included to omit any void tailnum column
+#select tailnum, sum(distance) as totaldistance from flights where tailnum is not null and tailnum != '' group by tailnum order by totaldistance desc;    #where clause included to omit any void tailnum column
+select tailnum, sum(distance) as totaldistance from flights where tailnum != 'NA' and tailnum != "#?NOMBRE?" group by tailnum order by totaldistance desc limit 10;
 
 #7
-select uniquecarrier, avg(arrdelay) as avgdelay from flights group by uniquecarrier having avgdelay > 10 order by avgdelay desc;
+select uniquecarrier, avg(arrdelay) as avgdelay from flights group by uniquecarrier having avgdelay > 10.0 order by avgdelay desc;
